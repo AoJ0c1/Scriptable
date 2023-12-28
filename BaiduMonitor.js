@@ -20,17 +20,21 @@ Script.complete();
 
 async function createWidget(res) {
   if (res && res.items) {
-    var items = res.items;
+    var items = res.items.slice(0, 6); // 只取前6个热搜
     const opts = {
       title,
-      texts: {},
+      texts: {
+        text1: { text: `📌 ${items[0].title}`, url: items[0].url },
+        text2: { text: `• ${items[1].title}`, url: items[1].url },
+        text3: { text: `• ${items[2].title}`, url: items[2].url },
+        text4: { text: `• ${items[3].title}`, url: items[3].url },
+        text5: { text: `• ${items[4].title}`, url: items[4].url },
+        text6: { text: `• ${items[5].title}`, url: items[5].url },
+        battery: "true",
+      },
       preview,
       spacing,
     };
-
-    items.slice(0, 6).forEach((item, index) => {
-      opts.texts[`text${index + 1}`] = { text: `• ${item.title}`, url: item.url };
-    });
 
     let widget = await $.createWidget(opts);
     return widget;
