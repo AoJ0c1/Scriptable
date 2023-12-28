@@ -71,7 +71,7 @@ function update() {
 const scripts = [
   {
     moduleName: "BaiduMonitor",
-    url: "https://github.com/AoJ0c1/Scriptable/BaiduMonitor.js", // 需要替换为实际的脚本 URL
+    url: "https://github.com/AoJ0c1/Scriptable/blob/main/BaiduMonitor.js", // 需要替换为实际的脚本 URL
   },
 ];
 if (goupdate == true) update();
