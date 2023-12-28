@@ -1,11 +1,12 @@
 // Variables used by Scriptable.
+// These must be at the very top of the file. Do not edit.
 // icon-color: deep-blue; icon-glyph: fire;
 /*
  * Author: AoJ0c1
  * Github: https://github.com/AoJ0c1/
  * 本脚本使用了Env.scriptable，感谢！
  */
-const goupdate = true;
+const goupdate = false;
 const $ = importModule("Env");
 const title = `🔥 百度热搜`;
 const preview = "medium";
@@ -18,48 +19,31 @@ Script.setWidget(widget);
 Script.complete();
 
 async function createWidget(res) {
-  let widget = new ListWidget();
-  widget.spacing = spacing;
-
-  // 添加标题
-  let titleText = widget.addText(title);
-  titleText.font = Font.boldSystemFont(16);
-  titleText.textColor = Color.white();
-  widget.addSpacer(5);
-
-  // 每分钟更新一次
-  widget.refreshAfterDate = new Date(Date.now() + 1000 * 60);
-
-  // 遍历并添加热搜项目
   if (res && res.items) {
     var items = res.items;
+    const opts = {
+      title,
+      texts: {},
+      preview,
+      spacing,
+    };
 
     items.forEach((item, index) => {
       if (index < 6) { // 只显示前6个热搜
-        let hStack = widget.addStack();
-        hStack.layoutHorizontally();
-        hStack.centerAlignContent();
-
-        let bulletText = hStack.addText("• ");
-        bulletText.font = Font.regularSystemFont(14);
-        bulletText.textColor = Color.gray();
-
-        let itemText = hStack.addText(`${item.title}`);
-        itemText.font = Font.regularSystemFont(14);
-        itemText.textColor = Color.white();
-
-        hStack.addSpacer();
+        opts.texts[`text${index + 1}`] = { text: `• ${item.title}` };
       }
     });
-  }
 
-  return widget;
+    let widget = await $.createWidget(opts);
+    return widget;
+  }
 }
 
 async function getinfo() {
   const url = "https://top.baidu.com/board?tab=realtime";
   const html = await $.getStr({ url });
-  return parseBaiduHot(html);
+  const items = parseBaiduHot(html);
+  return { items };
 }
 
 function parseBaiduHot(html) {
@@ -87,7 +71,7 @@ function update() {
 const scripts = [
   {
     moduleName: "BaiduMonitor",
-    url: "https://github.com/AoJ0c1/Scriptable/blob/main/BaiduMonitor.js",
+    url: "https://github.com/AoJ0c1/Scriptable/blob/main/BaiduMonitor.js", // 需要替换为实际的脚本 URL
   },
 ];
 if (goupdate == true) update();
