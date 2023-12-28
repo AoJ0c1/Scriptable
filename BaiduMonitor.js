@@ -6,7 +6,7 @@
  * Github: https://github.com/AoJ0c1/
  * 本脚本使用了Env.scriptable，感谢！
  */
-const goupdate = false;
+const goupdate = true;
 const $ = importModule("Env");
 const title = `🔥 百度热搜`;
 const preview = "medium";
@@ -15,6 +15,7 @@ const spacing = 5;
 const res = await getinfo();
 
 let widget = await createWidget(res);
+widget.refreshAfterDate = new Date(Date.now() + 60000); // 设置小组件每分钟更新一次
 Script.setWidget(widget);
 Script.complete();
 
