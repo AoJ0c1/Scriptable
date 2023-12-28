@@ -26,13 +26,13 @@ async function createWidget(res) {
       texts: {},
       preview,
       spacing,
-      battery: "true", // 添加电池显示
     };
 
     items.forEach((item, index) => {
       if (index < 6) { // 只显示前6个热搜
         opts.texts[`text${index + 1}`] = { text: `• ${item.title}` };
       }
+      battery: "true", // 添加电池显示
     });
 
     let widget = await $.createWidget(opts);
