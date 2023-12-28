@@ -26,6 +26,7 @@ async function createWidget(res) {
       texts: {},
       preview,
       spacing,
+      battery: "true", // 添加电池显示
     };
 
     items.forEach((item, index) => {
