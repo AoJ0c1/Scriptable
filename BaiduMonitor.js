@@ -28,11 +28,8 @@ async function createWidget(res) {
       spacing,
     };
 
-    items.forEach((item, index) => {
-      if (index < 6) { // 只显示前6个热搜
-        opts.texts[`text${index + 1}`] = { text: `• ${item.title}` };
-      }
-      battery: "true", // 添加电池显示
+    items.slice(0, 6).forEach((item, index) => {
+      opts.texts[`text${index + 1}`] = { text: `• ${item.title}`, url: item.url };
     });
 
     let widget = await $.createWidget(opts);
@@ -48,13 +45,14 @@ async function getinfo() {
 }
 
 function parseBaiduHot(html) {
-  const regex = /<div class="content_1YWBm">.*?<div class="c-single-text-ellipsis">([\s\S]*?)<\/div>/g;
+  const regex = /<div class="content_1YWBm">.*?<a href="(https:\/\/www\.baidu\.com\/s\?wd=.*?)".*?>([\s\S]*?)<\/div>/g;
   let match;
   let items = [];
 
   while ((match = regex.exec(html)) !== null) {
-    let title = match[1].trim().replace(/<!--[\s\S]*?-->/g, ''); // 移除注释
-    items.push({ title });
+    let url = match[1].trim();
+    let title = match[2].trim().replace(/<[^>]+>/g, ''); // 移除HTML标签
+    items.push({ title, url });
   }
 
   return items;
